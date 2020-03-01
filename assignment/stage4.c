@@ -1,3 +1,15 @@
+
+          /*  scanf( "%[^\n]" , string );
+            char *pch;
+            pch = strtok (string," ");
+            for (i = 0; pch != NULL; i++){
+                args[i] = pch;
+                pch = strtok (NULL, " ");
+            } */
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -20,18 +32,33 @@ int doForking(char *program, char *args[], char *envp[]){
     else if (pid == 0){
         printf("I am the child with pid: %d\n", (int)getpid());
         sleep(2);
-        if (execve(program, args, envp) == -1){
+        if (execvp(program, args) == -1){
             perror("command invalid");
             //fflush(stdout);
         }
         printf("child exitting.. \n");
         printf("child finishes with pid: %d\n", (int)getpid());
+        
         exit(0);
     }
     
     printf("I am the parent waiting for the child to end with pid: %d\n", (int)getpid());
+   
     wait(NULL);
     printf("parent ending with pid: %d\n", (int)getpid());
+    char string[100] = {};
+    int i ;
+    for(i = 0;i< 100; i++){
+        args[i] = NULL;
+    }
+    gets(string);
+    
+    char * pch;
+    pch = strtok (string," ");
+    for (i = 0; pch != NULL; i++){
+        args[i] = pch;
+        pch = strtok (NULL, " ");
+    }
     
     return 0;
 }
@@ -86,46 +113,31 @@ int dc (char *directory){
 }
 
 int main (int argc, char *argv[], char * envp[]){
-printf("Stage3.c My PID s: %d \n", getpid());
+printf("Stage4.c My PID s: %d \n", getpid());
 
     char *args[100] ;
-    char string[256];
+    int i ;
+    for (i = 1; i < argc; i++){
+        args[i-1] = argv[i];
+    }
 
-        int i ;
-        for (i = 1; i < argc; i++){
-            args[i-1] = argv[i];
+    while(strcmp(args[0], "finish") != 0 ){
+        if (strcmp(args[0], "df") == 0 ){
+            df(args[1]);
         }
-    while (strcmp(args[0], "finish") != 0 ){
-    
-
-        if (strcmp(argv[1], "df") == 0 ){
-            df(argv[2]);
+        else if (strcmp(args[0], "dc") == 0 ){
+            dc(args[1]);
         }
-        else if (strcmp(argv[1], "dc") == 0 ){
-            dc(argv[2]);
+        else if (strcmp(args[0], "ddir") == 0 ){
+            ddir(args[1]);
         }
-        else if (strcmp(argv[1], "ddir") == 0 ){
-            ddir(argv[2]);
+        else if (strcmp(args[0], "cfile") == 0 ){
+            cfile(args[1], args[2]);
         }
-        else if (strcmp(argv[1], "cfile") == 0 ){
-            cfile(argv[2], argv[3]);
-        }
-        else doForking(argv[1], args, envp);
-
-        for (i = 0; i<100; i++){
-                args[i] = NULL;
-            }
-            
-            scanf( "%s" , string );
-            char * pch;
-            pch = strtok (string," ");
-            for (i = 0; pch != NULL; i++){
-                args[i] = pch;
-                pch = strtok (NULL, " ");
-            }
+        else doForking(args[0], args, envp);
+        
     }
     
     return 0;
 }
-
 

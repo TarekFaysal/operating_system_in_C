@@ -20,7 +20,7 @@ int doForking(char *program, char *args[], char *envp[]){
     else if (pid == 0){
         printf("I am the child with pid: %d\n", (int)getpid());
         sleep(2);
-        if (execve(program, args, envp) == -1){
+        if (execvp(program, args) == -1){
             perror("command invalid");
             //fflush(stdout);
         }

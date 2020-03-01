@@ -52,7 +52,7 @@ int dc (char *directory){
 }
 
 int main (int argc, char *argv[], char * envp[]){
-printf("Stage2.c My PID s: %d \n", getpid());
+    printf("Stage2.c My PID s: %d \n", getpid());
 
     char *args[100] ;
     int i ;
@@ -72,7 +72,7 @@ printf("Stage2.c My PID s: %d \n", getpid());
     else if (strcmp(argv[1], "cfile") == 0 ){
         cfile(argv[2], argv[3]);
     }
-    else if (execve(argv [1], args, envp) == -1){
+    else if (execvp(argv [1], args) == -1){
             printf("Command invalid : %s\n", argv[0]);
             perror("command invalid");
             fflush(stdout);

@@ -1,5 +1,6 @@
 #include <stdio.h> 
 #include <unistd.h>
+#include <stdlib.h>
 int main(int argc, char *argv[]) 
 { 
     printf("hello.c\n");
@@ -9,7 +10,8 @@ int main(int argc, char *argv[])
         printf("%s, ",argv[i] );
     }
     printf("\n");
-
+    
     return 0;
+    exit(0);
      
 } 
