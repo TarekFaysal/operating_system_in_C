@@ -10,6 +10,7 @@ printf("Stage1.c My PID s: %d \n", getpid());
     for (i = 1; i < argc; i++){
         args[i-1] = argv[i];
     }
-    execve(argv[1], args, envp);
+    execvp(argv[1], args);
+
     return 0;
 }
